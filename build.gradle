@@ -1,0 +1,31 @@
+apply plugin: 'kotlin'
+version '1.0-SNAPSHOT'
+
+buildscript {
+  ext.kotlin_version = '1.0.6'
+  
+  repositories {
+    mavenCentral()
+  }
+  dependencies {
+    classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+  }
+}
+
+repositories {
+  mavenCentral()
+}
+
+dependencies {
+  compile "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
+  compile 'com.sparkjava:spark-core:+'
+  compile 'org.slf4j:slf4j-simple:+'
+}
+
+task copyToLib(type: Copy) {
+  into "$buildDir/libs"
+  from(configurations.compile)
+}
+
+task stage(dependsOn: ['clean', 'build', 'copyToLib'])
+build.mustRunAfter clean
